@@ -1,0 +1,18 @@
+version: "3"
+services: 
+    backend:
+        build: .
+        ports: 
+            - "8080:8080"
+        volumes: 
+            - .:/app
+        depends_on: 
+            - oracle_db
+    oracle_db:
+        build: ./db
+        volumes: 
+            - oracledb:/u01/app/oracle
+        ports: 
+            - "1521:1521"
+volumes: 
+    oracledb:
