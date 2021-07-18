@@ -4,16 +4,19 @@ import io.asiam.tansiq.exceptions.StorageException;
 import io.asiam.tansiq.exceptions.UserInputException;
 import io.github.cdimascio.dotenv.Dotenv;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.Objects;
+import java.util.Calendar;
 
 @Service("filesystemFileStorage")
 public class FilesystemFileStorage implements StorageService {
@@ -29,12 +32,17 @@ public class FilesystemFileStorage implements StorageService {
     }
 
     @Override
-    public void store(MultipartFile file) {
+    public String store(MultipartFile file) {
         if (file.isEmpty()) {
             throw new UserInputException("Cannot save an empty file");
         }
+        String fileName = file.getOriginalFilename();
+        if (fileName == null) {
+            throw new StorageException("File name cannot be null");
+        }
+        fileName = Calendar.getInstance().getTimeInMillis() + "_" + fileName;
         Path destinationFilePath = this.rootLocation.resolve(
-                Paths.get(Objects.requireNonNull(file.getOriginalFilename())))
+                Paths.get(fileName))
                 .normalize().toAbsolutePath();
         // security check
         if (!destinationFilePath.getParent().equals(this.rootLocation.toAbsolutePath())) {
@@ -47,10 +55,23 @@ public class FilesystemFileStorage implements StorageService {
         } catch (IOException e) {
             throw new StorageException("Couldn't store the file", e);
         }
+        return fileName;
     }
 
     @Override
-    public Path load(String fileName) {
-        return rootLocation.resolve(fileName);
+    public Resource load(String fileName) {
+        try {
+            Path file = rootLocation.resolve(fileName);
+            Resource resource = new UrlResource(file.toUri());
+            if (resource.exists() || resource.isReadable()) {
+                return resource;
+            } else {
+                throw new StorageException(
+                        "Could not read file: " + fileName);
+
+            }
+        } catch (MalformedURLException e) {
+            throw new StorageException("Could not read file (" + fileName + ")", e);
+        }
     }
 }

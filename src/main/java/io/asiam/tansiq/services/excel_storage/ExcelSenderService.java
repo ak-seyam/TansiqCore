@@ -18,4 +18,8 @@ public class ExcelSenderService {
         ResponseEntity<String> res = restTemplate.getForEntity("http://excel-uploader/ping", String.class);
         return res.getBody();
     }
+
+    public void inform(String fileUrl) {
+
+    }
 }
