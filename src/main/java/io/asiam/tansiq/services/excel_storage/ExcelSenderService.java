@@ -6,11 +6,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 @Service
-public class ExcelStorageUp {
+public class ExcelSenderService {
     private final RestTemplate restTemplate;
 
     @Autowired
-    public ExcelStorageUp(RestTemplate restTemplate) {
+    public ExcelSenderService(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }
 
