@@ -1,5 +1,6 @@
 package io.asiam.tansiq.controllers;
 
+import io.asiam.tansiq.models.StudentsFileInformation;
 import io.asiam.tansiq.services.excel_storage.ExcelSenderService;
 import io.asiam.tansiq.services.global_info.GlobalInfoService;
 import io.asiam.tansiq.services.storage.StorageService;
@@ -12,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.nio.file.Path;
 import java.util.Map;
 
 @RestController()
@@ -50,8 +50,13 @@ public class ExcelFileController {
         // store the file
         String fileName = storageService.store(file);
         // after storing the file call the excel sender service to send the file to the db
-        // TODO fix this
-        excelSenderService.inform(globalInfoService.getServerBaseUrlAsService() + "studentFiles/" + fileName);
+        excelSenderService.inform(
+                new StudentsFileInformation(
+                        globalInfoService.getServerBaseUrlAsService() + "studentFiles/" + fileName,
+                        studentNameColumnName,
+                        studentMarkColumnName
+                )
+        );
         return Map.of("success", true); // send success in case of success
     }
 }
