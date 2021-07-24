@@ -4,13 +4,13 @@ import lombok.Data;
 
 @Data
 public class StudentsFileInformation {
-   private String fileName;
-   private String studentNameColumnName;
-   private String studentMarkColumnName;
+   private String fileUrl;
+   private String studentsNameColumnName;
+   private String studentsMarkColumnName;
 
    public StudentsFileInformation(String fileName, String studentNameColumnName, String studentMarkColumnName) {
-      this.fileName = fileName;
-      this.studentNameColumnName = studentNameColumnName;
-      this.studentMarkColumnName = studentMarkColumnName;
+      this.fileUrl = fileName;
+      this.studentsNameColumnName = studentNameColumnName;
+      this.studentsMarkColumnName = studentMarkColumnName;
    }
 }

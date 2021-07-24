@@ -1,5 +1,6 @@
 package io.asiam.tansiq.controllers;
 
+import io.asiam.tansiq.exceptions.UserInputException;
 import io.asiam.tansiq.models.StudentsFileInformation;
 import io.asiam.tansiq.services.excel_storage.ExcelSenderService;
 import io.asiam.tansiq.services.global_info.GlobalInfoService;
@@ -15,8 +16,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Map;
 
+@CrossOrigin(origins = "http://localhost:8989")
 @RestController()
-@RequestMapping("/students")
 public class ExcelFileController {
     private final StorageService storageService;
     private final ExcelSenderService excelSenderService;
@@ -41,12 +42,21 @@ public class ExcelFileController {
         );
     }
 
-    @PostMapping("/")
+    @PostMapping("/studentExelFiles")
     public Map<String, Object> uploadStudentsSheet(
             @RequestParam("file") MultipartFile file,
             @RequestParam("studentNameColumnName") String studentNameColumnName,
             @RequestParam("studentMarkColumnName") String studentMarkColumnName
     ) {
+        // if thee is not sent
+        if (file.getOriginalFilename() == null) {
+            throw new UserInputException("File is not sent");
+        }
+        // check if the file format is csv
+        // uncomment this in prod
+//        if (file.getOriginalFilename().endsWith(".csv")) {
+//            throw new UserInputException("Invalid file format");
+//        }
         // store the file
         String fileName = storageService.store(file);
         // after storing the file call the excel sender service to send the file to the db

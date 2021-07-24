@@ -9,13 +9,11 @@ import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
+import java.nio.file.*;
 import java.util.Calendar;
 
 @Service("filesystemFileStorage")
@@ -36,7 +34,7 @@ public class FilesystemFileStorage implements StorageService {
         if (file.isEmpty()) {
             throw new UserInputException("Cannot save an empty file");
         }
-        String fileName = file.getOriginalFilename();
+        String fileName = file.getOriginalFilename().replace(" ", "_");
         if (fileName == null) {
             throw new StorageException("File name cannot be null");
         }
@@ -50,10 +48,16 @@ public class FilesystemFileStorage implements StorageService {
             throw new IllegalStateException(
                     "Cannot store file outside current directory.");
         }
+        File dir = this.rootLocation.toAbsolutePath().toFile();
+        dir.mkdir();
         try (InputStream inputStream = file.getInputStream()) {
             Files.copy(inputStream, destinationFilePath, StandardCopyOption.REPLACE_EXISTING);
-        } catch (IOException e) {
-            throw new StorageException("Couldn't store the file", e);
+        }
+        catch (NoSuchFileException noSuchFileException) {
+            throw new StorageException("No such file Error", noSuchFileException);
+        }
+        catch (IOException e) {
+            throw new StorageException("Couldn't store the file ", e);
         }
         return fileName;
     }

@@ -28,7 +28,7 @@ public class ExcelSenderService {
     }
 
     public void inform(StudentsFileInformation fileInformation) {
-        ResponseEntity<UploaderServerResponse> res = restTemplate.postForEntity("http://" + this.excelUploaderBase + "/sendFiles", fileInformation, UploaderServerResponse.class);
+        ResponseEntity<UploaderServerResponse> res = restTemplate.postForEntity("http://" + this.excelUploaderBase + "/studentsFiles", fileInformation, UploaderServerResponse.class);
         if (!Objects.requireNonNull(res.getBody()).isSuccess()) {
             throw new StorageException(res.getBody().getMessage());
         }

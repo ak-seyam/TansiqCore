@@ -16,7 +16,7 @@ public class FileErrorHandler {
         return new ResponseEntity<>(
                 Map.of("success", false, "message", ex.getLocalizedMessage()),
                 new HttpHeaders(),
-                HttpStatus.BAD_REQUEST
+                HttpStatus.INTERNAL_SERVER_ERROR
         );
     }
 }
