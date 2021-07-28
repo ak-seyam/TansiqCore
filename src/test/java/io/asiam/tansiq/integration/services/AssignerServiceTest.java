@@ -43,8 +43,8 @@ public class AssignerServiceTest {
         // given
         // create students
         List<Student> students = List.of(
-                studentRepository.save(new Student("ahmed", 420, "ahmed@ahmed.com")),
-                studentRepository.save(new Student("ahmed2", 410, "ahmed@ahmed.com"))
+                studentRepository.save(new Student("ahmed", 420, "ahmed@ah12med.com","s" )),
+                studentRepository.save(new Student("ahmed2", 410, "ahmed@ahe23med.com", "x"))
         );
 
         List<Major> majors = List.of(
@@ -98,8 +98,8 @@ public class AssignerServiceTest {
         // given
         // create students
         List<Student> students = List.of(
-                studentRepository.save(new Student("ahmed", 420, "ahmed@ahmed.com")),
-                studentRepository.save(new Student("ahmed2", 410, "ahmed@ahmed.com"))
+                studentRepository.save(new Student("ahmed", 420, "ahmeimed@ahmed.com", "a")),
+                studentRepository.save(new Student("ahmed2", 410, "ahmihihihihied@ahmed.com", "c"))
         );
 
         List<Major> majors = List.of(

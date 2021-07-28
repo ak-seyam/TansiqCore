@@ -35,7 +35,7 @@ public class GetTheFirstMajorTest {
 
     @Test
     public void itShouldGetTheFirstMajorSuccessfully() {
-        Student student = studentRepository.save(new Student("ahmed",420, "ahmed@ahmed.com"));
+        Student student = studentRepository.save(new Student("ahmed",420, "aaaaaaah3med@ahmed.com","asd"));
         List<Major> majors = List.of(
                 majorRepository.save(new Major("hello", 1)),
                 majorRepository.save(new Major("hello2", 2))

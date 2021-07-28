@@ -20,11 +20,13 @@ public class Student {
     private int mark;
     @Column(unique = true, nullable = false)
     private String email;
-
-    public Student(String name, int mark, String email) {
+    @Column(nullable = false)
+    private String password;
+    public Student(String name, int mark, String email, String password) {
         this.name = name;
         this.mark = mark;
         this.email = email;
+        this.password = password;
     }
 
     public Student() {

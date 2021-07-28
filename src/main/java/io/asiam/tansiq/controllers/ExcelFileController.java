@@ -45,7 +45,9 @@ public class ExcelFileController {
     public Map<String, Object> uploadStudentsSheet(
             @RequestParam("file") MultipartFile file,
             @RequestParam("studentNameColumnName") String studentNameColumnName,
-            @RequestParam("studentMarkColumnName") String studentMarkColumnName
+            @RequestParam("studentMarkColumnName") String studentMarkColumnName,
+            @RequestParam("studentEmailColumnName") String studentEmailColumnName,
+            @RequestParam("studentPasswordColumnName") String studentPasswordColumnName
     ) {
         // if thee is not sent
         if (file.getOriginalFilename() == null) {
@@ -62,7 +64,9 @@ public class ExcelFileController {
                 new StudentsFileInformation(
                         globalInfoService.getServerBaseUrlAsService() + "studentFiles/" + fileName,
                         studentNameColumnName,
-                        studentMarkColumnName
+                        studentMarkColumnName,
+                        studentEmailColumnName,
+                        studentPasswordColumnName
                 )
         );
         return Map.of("success", true); // send success in case of success
