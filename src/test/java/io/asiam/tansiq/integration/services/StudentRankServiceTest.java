@@ -37,7 +37,7 @@ public class StudentRankServiceTest {
 
     @Test
     public void itShouldGetTheNextMajorForStudent() {
-        Student student = studentRepository.save(new Student("test", 420));
+        Student student = studentRepository.save(new Student("test", 420, "ahmed@ahmed.com"));
         List<Major> majorsInstances = List.of(
                 new Major("major1", 2),
                 new Major("major2", 2)
@@ -60,7 +60,7 @@ public class StudentRankServiceTest {
 
     @Test
     public void itShouldReturnNullIfMajorWasLast() {
-        Student student = studentRepository.save(new Student("test", 420));
+        Student student = studentRepository.save(new Student("test", 420, "ahmed@ahmed.com"));
         List<Major> majorsInstances = List.of(
                 new Major("major1", 2),
                 new Major("major2", 2)

@@ -40,8 +40,8 @@ public class AssignStudentToMajorTest {
     @Test
     public void itShouldAssignStudentToMajorInCaseOfMajorFinishSecondHigher() {
         List<Student> students = List.of(
-                studentRepository.save(new Student("ahmed", 410)),
-                studentRepository.save(new Student("ahmed2", 420))
+                studentRepository.save(new Student("ahmed", 410, "ahmed@ahmed.com")),
+                studentRepository.save(new Student("ahmed2", 420, "ahmed@ahmed.com"))
         );
 
         List<Major> majors = List.of(
@@ -92,8 +92,8 @@ public class AssignStudentToMajorTest {
     @Test
     public void itShouldDealWithConflictsIsExpected() {
         List<Student> students = List.of(
-                studentRepository.save(new Student("ahmed", 420)),
-                studentRepository.save(new Student("ahmed2", 420))
+                studentRepository.save(new Student("ahmed", 420, "ahmed@ahmed.com")),
+                studentRepository.save(new Student("ahmed2", 420, "ahmed@ahmed.com"))
         );
 
         List<Major> majors = List.of(
@@ -142,8 +142,8 @@ public class AssignStudentToMajorTest {
     @Test
     public void itShouldAssignStudentToMajorInCaseOfMajorFinishFirstHigher() {
         List<Student> students = List.of(
-                studentRepository.save(new Student("ahmed", 420)),
-                studentRepository.save(new Student("ahmed2", 410))
+                studentRepository.save(new Student("ahmed", 420, "ahmed@ahmed.com")),
+                studentRepository.save(new Student("ahmed2", 410, "ahmed@ahmed.com"))
         );
 
         List<Major> majors = List.of(
@@ -193,7 +193,7 @@ public class AssignStudentToMajorTest {
 
     @Test
     public void itShouldThrowExceptionIfStudentIdIsNull() {
-        Student student = new Student("student", 420);
+        Student student = new Student("student", 420, "ahmed@ahmed.com");
         Major major = majorRepository.save(new Major("major1", 1));
         assertThatThrownBy(() -> {
                     studentMajorService.assign(student, major);
@@ -205,7 +205,7 @@ public class AssignStudentToMajorTest {
 
     @Test
     public void itShouldThrowExceptionIfMajorIdIsNull() {
-        Student student = studentRepository.save(new Student("student", 420));
+        Student student = studentRepository.save(new Student("student", 420, "ahmed@ahmed.com"));
         Major major = new Major("major1", 1);
         assertThatThrownBy(() -> {
                     studentMajorService.assign(student, major);

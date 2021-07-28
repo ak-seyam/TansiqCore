@@ -16,7 +16,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Map;
 
-@CrossOrigin(origins = "http://localhost:8989")
 @RestController()
 public class ExcelFileController {
     private final StorageService storageService;
@@ -34,7 +33,7 @@ public class ExcelFileController {
         this.globalInfoService = globalInfoService;
     }
 
-    @GetMapping("/studentFiles/{fileName:+}")
+    @GetMapping("/studentFiles/{fileName:.+}")
     public ResponseEntity<Resource> serveFile(@PathVariable String fileName) {
         Resource file = storageService.load(fileName);
         return new ResponseEntity<>(
@@ -53,10 +52,9 @@ public class ExcelFileController {
             throw new UserInputException("File is not sent");
         }
         // check if the file format is csv
-        // uncomment this in prod
-//        if (file.getOriginalFilename().endsWith(".csv")) {
-//            throw new UserInputException("Invalid file format");
-//        }
+        if (!file.getOriginalFilename().endsWith(".csv")) {
+            throw new UserInputException("Invalid file format");
+        }
         // store the file
         String fileName = storageService.store(file);
         // after storing the file call the excel sender service to send the file to the db

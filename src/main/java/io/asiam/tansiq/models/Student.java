@@ -18,10 +18,13 @@ public class Student {
     @Column(unique = true, nullable = false)
     private String name;
     private int mark;
+    @Column(unique = true, nullable = false)
+    private String email;
 
-    public Student(String name, int mark) {
+    public Student(String name, int mark, String email) {
         this.name = name;
         this.mark = mark;
+        this.email = email;
     }
 
     public Student() {
