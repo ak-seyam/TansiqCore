@@ -7,4 +7,5 @@ import java.util.UUID;
 
 public interface StudentRepository extends JpaRepository<Student, UUID> {
     Student getByName(String name);
+    Student getByEmail(String email);
 }
