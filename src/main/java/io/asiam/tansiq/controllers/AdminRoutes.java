@@ -17,6 +17,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -32,6 +33,7 @@ public class AdminRoutes {
     private final MajorRepository majorRepository;
     private final MajorInfoRepository majorInfoRepository;
     private final AssignerService assignerService;
+    private final PasswordEncoder passwordEncoder;
 
     @GetMapping("")
     public String hello() {
@@ -47,7 +49,7 @@ public class AdminRoutes {
                 }
         );
         try {
-            Admin a = adminsRepository.save(new Admin((String) body.get("email"), (String) body.get("password")));
+            Admin a = adminsRepository.save(new Admin((String) body.get("email"), passwordEncoder.encode((String) body.get("password"))));
             return new ResponseEntity<>(
                     Map.of("success", true, "email", a.getEmail(), "id", a.getId()),
                     new HttpHeaders(),
@@ -74,7 +76,7 @@ public class AdminRoutes {
                     (String) body.get("name"),
                     (Integer) body.get("mark"),
                     (String) body.get("email"),
-                    (String) body.get("password")
+                    passwordEncoder.encode((String) body.get("password"))
             );
             Student res = studentRepository.save(s);
             return new ResponseEntity<>(

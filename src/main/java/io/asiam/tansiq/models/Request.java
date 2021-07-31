@@ -1,16 +1,22 @@
 package io.asiam.tansiq.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.UUID;
 
 @Data
 @Entity
-public class Request {
+@JsonIgnoreProperties(value={"hibernateLazyInitializer","handler","fieldHandler"})
+@Table(name = "REQUEST", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"STUDENT_ID", "MAJOR_ID"})
+})
+public class Request implements Serializable {
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")

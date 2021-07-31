@@ -9,6 +9,9 @@ import io.asiam.tansiq.repositories.RequestRepository;
 import io.asiam.tansiq.repositories.StudentRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -34,14 +37,19 @@ public class RequestBuilderService {
      *                  ]
      * @return list of build requests
      */
-    public List<Request> build(String studentId, List<Map<String, Object>> majorIds) {
+    public ResponseEntity<Map<String, Boolean>> build(String studentId, List<Map<String, Object>> majorIds) {
         try {
             Student student = studentRepository.getById(UUID.fromString(studentId));
             List<Request> requests = majorIds.stream().map(mid -> {
                 Major major = majorRepository.getById(UUID.fromString((String) mid.get("majorId")));
                 return new Request(student, major, (Integer) mid.get("rank"));
             }).collect(Collectors.toList());
-            return requestRepository.saveAll(requests);
+            requestRepository.saveAll(requests);
+            return new ResponseEntity<>(
+                    Map.of("success", true),
+                    new HttpHeaders(),
+                    HttpStatus.CREATED
+            );
         } catch (Exception e) {
             log.error("Can't create a request: {}", e.getMessage());
             throw new UserInputException(e.getMessage());
