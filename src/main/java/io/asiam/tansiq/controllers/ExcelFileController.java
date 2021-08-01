@@ -41,7 +41,7 @@ public class ExcelFileController {
         );
     }
 
-    @PostMapping("/studentExelFiles")
+    @PostMapping("/studentFiles")
     public Map<String, Object> uploadStudentsSheet(
             @RequestParam("file") MultipartFile file,
             @RequestParam("studentNameColumnName") String studentNameColumnName,
