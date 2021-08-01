@@ -21,6 +21,8 @@ public class Major {
     private int limit;
     @Column(nullable = false)
     private int studentsCount = 0;
+    @Column
+    private int originalLimit;
 
     public Major() {
     }
@@ -28,6 +30,7 @@ public class Major {
     public Major(String name, int limit) {
         this.name = name;
         this.limit = limit;
+        this.originalLimit = limit;
     }
 
     @Override

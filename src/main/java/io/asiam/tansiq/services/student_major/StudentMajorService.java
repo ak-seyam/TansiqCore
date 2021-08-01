@@ -21,7 +21,8 @@ public class StudentMajorService {
     @Qualifier("addBothStudents")
     private LowestMarkConflictHandler lowestMarkConflictHandler;
     @Autowired
-    @Qualifier("throwIllegalStateException")
+//    @Qualifier("throwIllegalStateException")
+    @Qualifier("noOpNoRequestStudent")
     private StudentNoRequestResolver studentNoRequestResolver;
     private final MajorInfoRepository majorInfoRepository;
     private final ResultRepository resultRepository;
@@ -61,6 +62,7 @@ public class StudentMajorService {
      * @param major
      */
     public void assign(Student student, Major major) {
+        if (major == null) { return; }
         if (student.getId() == null) {
             throw new IllegalArgumentException("Student should have an id");
         }

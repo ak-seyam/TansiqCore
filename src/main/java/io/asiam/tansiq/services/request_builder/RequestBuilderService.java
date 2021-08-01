@@ -42,7 +42,14 @@ public class RequestBuilderService {
             Student student = studentRepository.getById(UUID.fromString(studentId));
             List<Request> requests = majorIds.stream().map(mid -> {
                 Major major = majorRepository.getById(UUID.fromString((String) mid.get("majorId")));
-                return new Request(student, major, (Integer) mid.get("rank"));
+                Request request = requestRepository.getByStudentIdAndMajorId(UUID.fromString(studentId),
+                        UUID.fromString((String) mid.get("majorId")));
+                if (request == null) {
+                    return new Request(student, major, (Integer) mid.get("rank"));
+                } else {
+                    request.setRank((Integer) mid.get("rank"));
+                    return requestRepository.save(request);
+                }
             }).collect(Collectors.toList());
             requestRepository.saveAll(requests);
             return new ResponseEntity<>(

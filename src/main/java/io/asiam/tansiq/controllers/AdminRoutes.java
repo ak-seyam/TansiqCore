@@ -10,12 +10,13 @@ import io.asiam.tansiq.repositories.MajorInfoRepository;
 import io.asiam.tansiq.repositories.MajorRepository;
 import io.asiam.tansiq.repositories.StudentRepository;
 import io.asiam.tansiq.services.AssignerService;
+import io.asiam.tansiq.services.async_wrapper.AsyncWrapper;
+import io.asiam.tansiq.services.results_service.ResultsService;
 import io.asiam.tansiq.services.validators.ValidationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -34,6 +35,8 @@ public class AdminRoutes {
     private final MajorInfoRepository majorInfoRepository;
     private final AssignerService assignerService;
     private final PasswordEncoder passwordEncoder;
+    private final AsyncWrapper asyncWrapper;
+    private final ResultsService resultsService;
 
     @GetMapping("")
     public String hello() {
@@ -116,9 +119,15 @@ public class AdminRoutes {
     }
 
     @PostMapping("/tansiq")
-    public ResponseEntity<Map<String, Boolean>> doTansiq() {
+    public ResponseEntity<Map<String, Object>> doTansiq() {
+        boolean isFull = resultsService.isResultsFull();
+        if (isFull) return new ResponseEntity<>(
+                Map.of("success", false, "message", "results are full"),
+                new HttpHeaders(),
+                HttpStatus.BAD_REQUEST
+        );
         try {
-            assignerService.assign();
+            asyncWrapper.wrapper(assignerService::assign);
             return new ResponseEntity<>(
                     Map.of("success", true),
                     new HttpHeaders(),

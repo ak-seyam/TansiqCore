@@ -51,6 +51,9 @@ public class LeastStudentImpl implements LeastStudentService {
     public void setLeastStudent(Major major) {
         Student lowestStudent = getLeastStudent(major);
         MajorInfo updatedInfo = majorInfoRepository.getByMajorId(major.getId());
+        if (updatedInfo == null) {
+            updatedInfo = majorInfoRepository.save(new MajorInfo(major, lowestStudent));
+        }
         updatedInfo.setLowestStudent(lowestStudent);
         majorInfoRepository.save(updatedInfo);
     }
