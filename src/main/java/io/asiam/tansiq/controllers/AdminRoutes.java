@@ -120,12 +120,6 @@ public class AdminRoutes {
 
     @PostMapping("/tansiq")
     public ResponseEntity<Map<String, Object>> doTansiq() {
-        boolean isFull = resultsService.isResultsFull();
-        if (isFull) return new ResponseEntity<>(
-                Map.of("success", false, "message", "results are full"),
-                new HttpHeaders(),
-                HttpStatus.BAD_REQUEST
-        );
         try {
             asyncWrapper.wrapper(assignerService::assign);
             return new ResponseEntity<>(

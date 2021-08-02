@@ -27,6 +27,10 @@ public class Major {
     public Major() {
     }
 
+    public void setLimit(int limit) {
+        this.limit = limit;
+    }
+
     public Major(String name, int limit) {
         this.name = name;
         this.limit = limit;

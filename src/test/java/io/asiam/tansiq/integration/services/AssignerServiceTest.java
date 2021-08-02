@@ -43,9 +43,12 @@ public class AssignerServiceTest {
         // given
         // create students
         List<Student> students = List.of(
-                studentRepository.save(new Student("ahmed", 420, "ahmed@ah12med.com","s" )),
+                studentRepository.save(new Student("ahmed", 420, "ahmed@ah12med.com", "s")),
                 studentRepository.save(new Student("ahmed2", 410, "ahmed@ahe23med.com", "x"))
         );
+
+        Major m = new Major("major1", 1);
+        System.out.println("Major is " + m.toString());
 
         List<Major> majors = List.of(
                 majorRepository.save(new Major("major1", 1)),
@@ -94,7 +97,7 @@ public class AssignerServiceTest {
     }
 
     @Test
-    public void itShouldThrowExceptionIfNotAllStudentsHasRequests() {
+    public void itShouldGracefullySkipIfNotAllStudentsHasRequests() {
         // given
         // create students
         List<Student> students = List.of(
@@ -122,16 +125,7 @@ public class AssignerServiceTest {
         List<Request> studentOneRequests = studentOneRequestsUnsaved.stream().map(request -> {
             return requestRepository.save(request);
         }).collect(Collectors.toList());
-
-        assertThatThrownBy(
-                () -> {
-                    // when
-                    assignerService.assign();
-                }
-                // then
-        ).isInstanceOf(IllegalStateException.class)
-                .hasMessageContaining("Student");
-
+        assignerService.assign(); // shouldn't throw exception
     }
 
 }
