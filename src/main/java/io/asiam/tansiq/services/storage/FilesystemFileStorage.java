@@ -3,6 +3,7 @@ package io.asiam.tansiq.services.storage;
 import io.asiam.tansiq.exceptions.StorageException;
 import io.asiam.tansiq.exceptions.UserInputException;
 import io.asiam.tansiq.services.EnvironmentVariablesSetup;
+import io.asiam.tansiq.services.ExternalVariablesSetup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -21,7 +22,7 @@ public class FilesystemFileStorage implements StorageService {
     private final Path rootLocation;
 
     @Autowired
-    public FilesystemFileStorage(EnvironmentVariablesSetup variablesSetup) {
+    public FilesystemFileStorage(ExternalVariablesSetup variablesSetup) {
         var storageFolder = variablesSetup.getVar("STUDENTS_FILE_PATH");
         if (storageFolder == null) {
             throw new IllegalStateException("Students file path shouldn't be null");
